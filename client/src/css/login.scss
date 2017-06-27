@@ -32,15 +32,43 @@
 .messages {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 20px;
+    overflow-y: scroll;
 }
 
-.messages li {
+.otherBubble {
     padding: 5px 10px;
+    line-height: 30px;
+    font-size: 15px;
+    color: white;
+    strong {
+        color: #00838F;
+        font-weight: 700;
+        margin-right: 10px;
+    }
+    span {
+        background: #00BCD4;
+        padding: 10px;
+    }
 }
 
-.messages li:nth-child(odd) {
-    background: #eee;
+.selfBubble {
+    padding: 5px 10px;
+    font-size: 15px;
+    color: white;
+    overflow: hidden;
+    strong {
+        line-height: 30px;
+        float: right;
+        color: #00838F;
+        font-weight: 700;
+        margin-left: 10px;
+    }
+    span {
+        float: right;
+        background: #009688;
+        padding: 10px;
+    }
 }
 
 .inputForm {

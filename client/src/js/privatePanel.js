@@ -7,11 +7,19 @@ import {
     observer
 } from 'mobx-react';
 
-export default @observer class MainPanel extends React.Component {
-
+export default @observer class PrivatePanel extends React.Component {
 
     render() {
-        var listContent = Appstate.messages.slice()
+        let pm = Appstate.privateMessage
+
+        let to = Appstate.to
+        var listContent
+        if (!to) {
+            listContent = Appstate.messages.slice()
+        } else {
+            listContent = pm[to] ? pm[to].slice() : []
+        }
+        console.log(Appstate.privateMessage)
         return (
             <ul id='messages' className={style.messages}>{listContent.map((elem,index) => {
                 if(elem.username==Appstate.username){

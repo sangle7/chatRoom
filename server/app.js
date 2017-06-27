@@ -10,18 +10,23 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '..', 'client', 'index.html'))
 });
 var userList = [],
-    number = 0
+    usocket = {};
 io.on('connection', function(socket) {
     socket.on('user login', (name) => {
         userList.push(name)
+        usocket[name] = socket;
         io.emit('user login', name);
         io.emit('render online', userList)
     });
     socket.on('typing', (name) => {
         io.emit('typing', name);
     });
-    socket.on('chat message', (name, msg) => {
-        io.emit('chat message', name, msg);
+    socket.on('chat message', (name, msg, to) => {
+        if (!to) {
+            io.emit('chat message', name, msg);
+        } else {
+            usocket[to].emit('get private message', name, msg);
+        }
     });
     socket.on('user disconnected', (name) => {
         var index = userList.indexOf(name)
