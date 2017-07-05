@@ -18,6 +18,9 @@ module.exports = {
                 to: '/index.html'
             }, ]
         },
+        proxy: {
+            "/": "http://localhost:3000"
+        },
         contentBase: 'client'
     },
     devtool: 'inline-source-map',
