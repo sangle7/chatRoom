@@ -33,7 +33,7 @@ Appstate.sendMessage = function (msg) {
         let arr = this.privateMessage.get(this.to)
         arr.push({
             username: this.username,
-           msg: msg
+            msg: msg
         })
         this.privateMessage.set(this.to, arr);
     }
@@ -49,15 +49,16 @@ socket.on('chat message', (username, msg) => {
 });
 
 socket.on('get private message', (name, msg) => {
-    if (!Appstate.privateMessage[name]) {
-        Appstate.privateMessage[name] = []
+    if (!Appstate.privateMessage.has(name)) {
+        Appstate.privateMessage.set(name, []);
     }
-    Appstate.privateMessage[name].push({
+    let arr = Appstate.privateMessage.get(name)
+    arr.push({
         username: name,
         msg: msg
-    })
-    console.log(Appstate.privateMessage)
-});
+    }) 
+    Appstate.privateMessage.set(name, arr);
+})
 
 
 socket.on('typing', (username) => {
