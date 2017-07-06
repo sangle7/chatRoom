@@ -15,29 +15,31 @@ export const Appstate = observable({
     to: null
 });
 
-Appstate.setUserName = function(name) {
+// export const @observable privateMessage = new Map();
+
+Appstate.setUserName = function (name) {
     this.username = name
     socket.emit('user login', name);
 }
-Appstate.isTyping = function() {
+Appstate.isTyping = function () {
     socket.emit('typing', this.username);
 }
-Appstate.sendMessage = function(msg) {
+Appstate.sendMessage = function (msg) {
     socket.emit('chat message', this.username, msg, this.to);
     if (this.to) {
-        if (!this.privateMessage[this.to]) {
-            this.privateMessage[this.to] = []
+        if (!this.privateMessage.has(this.to)) {
+            this.privateMessage.set(this.to, []);
         }
-        this.privateMessage[this.to].push({
+        let arr = this.privateMessage.get(this.to)
+        arr.push({
             username: this.username,
-            msg: msg
+           msg: msg
         })
-        console.log(this.privateMessage)
+        this.privateMessage.set(this.to, arr);
     }
 }
-Appstate.changeTo = function(to) {
+Appstate.changeTo = function (to) {
     this.to = to
-    console.log(this.to)
 }
 socket.on('chat message', (username, msg) => {
     Appstate.messages.push({

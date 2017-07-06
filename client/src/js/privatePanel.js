@@ -10,16 +10,12 @@ import {
 export default @observer class PrivatePanel extends React.Component {
 
     render() {
-        let pm = Appstate.privateMessage
-
-        let to = Appstate.to
-        var listContent
-        if (!to) {
+        let listContent
+        if (!Appstate.to) {
             listContent = Appstate.messages.slice()
         } else {
-            listContent = pm[to] ? pm[to].slice() : []
+            listContent = Appstate.privateMessage.get(Appstate.to)||[]
         }
-        console.log(Appstate.privateMessage)
         return (
             <ul id='messages' className={style.messages}>{listContent.map((elem,index) => {
                 if(elem.username==Appstate.username){
