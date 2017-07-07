@@ -11,6 +11,7 @@ export const Appstate = observable({
     onlineList: [],
     toastMessage: '',
     toastOpen: false,
+    unreadMessage:observable.map({}),
     privateMessage: observable.map({}),
     to: null
 });
@@ -58,6 +59,14 @@ socket.on('get private message', (name, msg) => {
         msg: msg
     }) 
     Appstate.privateMessage.set(name, arr);
+
+     if (!Appstate.unreadMessage.has(name)) {
+        Appstate.unreadMessage.set(name, 0);
+    }
+    let number = Appstate.unreadMessage.get(name)
+    Appstate.unreadMessage.set(name, number+1);
+
+    console.log(Appstate.unreadMessage.get(name))
 })
 
 

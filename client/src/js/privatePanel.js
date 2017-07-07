@@ -10,6 +10,7 @@ import {
 export default @observer class PrivatePanel extends React.Component {
 
     render() {
+        console.log('render')
         let listContent
         if (!Appstate.to) {
             listContent = Appstate.messages.slice()
