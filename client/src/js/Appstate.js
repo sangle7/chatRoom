@@ -65,7 +65,7 @@ socket.on('get private message', (name, msg) => {
     })
     Appstate.privateMessage.set(name, arr);
 
-    console.log(Appstate.privateMessage)
+    console.log(Appstate.privateMessage.get(name))
 })
 
 

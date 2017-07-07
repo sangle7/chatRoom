@@ -12,7 +12,8 @@ export default @observer class PrivatePanel extends React.Component {
         } else {
             listContent = Appstate.privateMessage.get(Appstate.to)|| []
         }
-        listContent=listContent.slice()
+        console.log(listContent)
+        listContent=listContent.peek()
         console.log(listContent)
         return (
             <ul id='messages' className={style.messages}>{listContent.map((elem, index) => {
