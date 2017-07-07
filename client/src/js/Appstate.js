@@ -11,13 +11,15 @@ export const Appstate = observable({
     onlineList: [],
     toastMessage: '',
     toastOpen: false,
-    unreadMessage:observable.map({}),
+    unreadMessage: observable.map({}),
     privateMessage: observable.map({}),
     to: null
 });
 
 // export const @observable privateMessage = new Map();
-
+Appstate.clearThisUnread = function (name) {
+    this.unreadMessage.set(name, 0);
+}
 Appstate.setUserName = function (name) {
     this.username = name
     socket.emit('user login', name);
@@ -57,16 +59,18 @@ socket.on('get private message', (name, msg) => {
     arr.push({
         username: name,
         msg: msg
-    }) 
+    })
     Appstate.privateMessage.set(name, arr);
 
-     if (!Appstate.unreadMessage.has(name)) {
-        Appstate.unreadMessage.set(name, 0);
+    if (name != Appstate.to) {
+        if (!Appstate.unreadMessage.has(name)) {
+            Appstate.unreadMessage.set(name, 0);
+        }
+        let number = Appstate.unreadMessage.get(name)
+        Appstate.unreadMessage.set(name, number + 1);
     }
-    let number = Appstate.unreadMessage.get(name)
-    Appstate.unreadMessage.set(name, number+1);
 
-    console.log(Appstate.unreadMessage.get(name))
+    console.log(Appstate.unreadMessage)
 })
 
 

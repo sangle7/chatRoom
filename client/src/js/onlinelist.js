@@ -16,6 +16,7 @@ export default @observer class OnlineList extends React.Component {
     startPrivateTalk = (name) => {
         Appstate.changeTo(name)
         this.props.closeDrawer()
+        Appstate.clearThisUnread(name)
     }
 
     render() {
@@ -25,6 +26,7 @@ export default @observer class OnlineList extends React.Component {
   <ListItem onClick={this.startPrivateTalk.bind(this,'')}>Group Talk</ListItem>
   <Divider />
          {data.map((elem, index) => {
+             if(elem!==Appstate.username)
                     return <ListItem  onClick={this.startPrivateTalk.bind(this,elem)} key={index} primaryText={elem}/>
                 })}
     </List>
