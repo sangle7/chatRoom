@@ -11,7 +11,7 @@ export const Appstate = observable({
     onlineList: [],
     toastMessage: '',
     toastOpen: false,
-    privateMessage: {},
+    privateMessage: observable.map({}),
     to: null
 });
 
@@ -25,15 +25,15 @@ Appstate.isTyping = function () {
 Appstate.sendMessage = function (msg) {
     socket.emit('chat message', this.username, msg, this.to);
     if (this.to) {
-        if (!this.privateMessage[this.to]) {
-            let obj = {}
-            obj[this.to] = []
-            extendObservable(this.privateMessage, obj);
+        if (!this.privateMessage.has(this.to)) {
+            this.privateMessage.set(this.to, []);
         }
-        this.privateMessage[this.to].push({
+        let arr = this.privateMessage.get(this.to)
+        arr.push({
             username: this.username,
             msg: msg
         })
+        this.privateMessage.set(this.to, arr);
     }
 }
 Appstate.changeTo = function (to) {
@@ -47,16 +47,16 @@ socket.on('chat message', (username, msg) => {
 });
 
 socket.on('get private message', (name, msg) => {
-    if (!Appstate.privateMessage[name]) {
-        let obj = {}
-        obj[name] = []
-        extendObservable(Appstate.privateMessage, obj);
+    if (!Appstate.privateMessage.has(name)) {
+        Appstate.privateMessage.set(name, []);
     }
-    Appstate.privateMessage[name].push({
+    let arr = Appstate.privateMessage.get(name)
+    arr.push({
         username: name,
         msg: msg
-    })
-});
+    }) 
+    Appstate.privateMessage.set(name, arr);
+})
 
 
 socket.on('typing', (username) => {

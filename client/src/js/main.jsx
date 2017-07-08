@@ -37,7 +37,7 @@ class Main extends React.Component {
   />
   <Drawer open={this.state.open} onRequestChange={(open) => this.setState({open})} docked={false}>
   <AppBar title="♥ Online ♥" />
-  <OnlineList/>
+  <OnlineList closeDrawer={this.handleClose}/>
         </Drawer>
           <Toast/>
           <PrivatePanel />

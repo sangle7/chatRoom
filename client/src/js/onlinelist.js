@@ -13,7 +13,10 @@ import {
 import Divider from 'material-ui/Divider';
 
 export default @observer class OnlineList extends React.Component {
-    startPrivateTalk = (name) => Appstate.changeTo(name)
+    startPrivateTalk = (name) => {
+        Appstate.changeTo(name)
+        this.props.closeDrawer()
+    }
 
     render() {
         var data = Appstate.onlineList.slice()
