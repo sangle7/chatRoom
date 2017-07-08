@@ -17,10 +17,13 @@ export const Appstate = observable({
 
 Appstate.clearThisUnread = function (name) {
     let arr = this.privateMessage.get(name),
-        newArr = arr.slice().map(elem => {
-            elem.unread = false
+        newArr = arr.slice(),
+        _arr=newArr.map(elem =>{
+            elem.unread=false;
+            return elem
         })
-    this.privateMessage.set(name, newArr)
+        debugger;
+    this.privateMessage.set(name, _arr)
 }
 Appstate.setUserName = function (name) {
     this.username = name
@@ -61,7 +64,7 @@ socket.on('get private message', (name, msg) => {
     arr.push({
         username: name,
         msg: msg,
-        unread: name != Appstate.to
+        unread: name == Appstate.to?false:true
     })
     Appstate.privateMessage.set(name, arr);
 
